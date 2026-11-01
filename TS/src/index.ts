@@ -25,7 +25,7 @@ for(let order of orders){
     
 }
 
-// Type Narrowing 
+// Type Narrowing && Type Guards 
 function getChai(kind:string | number){
   if(typeof kind==='string')
     return `Your Order for the ${kind} is been Sent`;
@@ -45,4 +45,75 @@ function orderChai(size:"small" | "medium" | "large" | number){
   if(typeof size!=='number')
     return `${size} Cutting Chai`;
   return `Chai Order is: ${size}`
+}
+
+
+class KulhadChai{
+  serve(){
+    return `Serving Khulhad Chai`;
+  }
+}
+
+class CuttingChai{
+  serve(){
+    return `Serving Cutting Chai`;
+  }
+}
+
+function serve(chai:KulhadChai | CuttingChai){
+  if(chai instanceof KulhadChai)
+    return chai.serve();
+}
+
+
+type ChaiOrder={
+  type:String
+  sugar:number
+}
+
+function isChaiOrder(obj:any):obj is ChaiOrder{
+  return(
+    typeof obj==="object" && 
+    obj!=null && 
+    typeof obj.type==="string" && 
+    typeof obj.sugar === "number"
+  )
+}
+
+function serveOrder(item:ChaiOrder | string){
+  if(isChaiOrder(item)){
+    return `Serving ${item.type} chai with ${item.sugar} sugar`
+  }
+  return `Serving custom chai: ${item}`;
+}
+
+
+type MasalaChai={type:"masala",spicelevel:number}
+type GingerChai={type:"ginger",gingeramount:number}
+type MilkChai={type:"milk",milkamount:number}
+
+
+type Chai=MasalaChai | GingerChai | MilkChai;
+
+function MakeChai(order:Chai)
+{
+  switch(order.type){
+    case "masala":
+      return `Masala Chai`;
+        case "ginger":
+      return `ginger Chai`;
+          case "milk":
+      return `milk Chai`;
+      default:
+        return `Normal Chai`;
+  }
+}
+
+function brew(order:MasalaChai | GingerChai){
+  if("gingerLevl" in order)
+    // 
+}
+
+function isStringArray(arr:unknown):arr is string[]{
+
 }
